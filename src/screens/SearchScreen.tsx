@@ -421,9 +421,9 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
             </Text>
 
             <View style={styles.kpiRow}>
-              <View style={styles.kpiBox}>
-                <Text style={styles.kpiLabel}>Menor pontuação</Text>
-                <Text style={styles.kpiValue}>{formatNumberBR(summary.lowestPoints)} pts</Text>
+              <View style={[styles.kpiBox, styles.kpiBoxHighlight]}>
+                <Text style={styles.kpiLabelHighlight}>Menor pontuação</Text>
+                <Text style={styles.kpiValueHighlight}>{formatNumberBR(summary.lowestPoints)} pts</Text>
               </View>
               <View style={styles.kpiBox}>
                 <Text style={styles.kpiLabel}>Menor preço</Text>
@@ -842,6 +842,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.surfaceAlt,
     borderRadius: 10,
     padding: 8,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  kpiBoxHighlight: {
+    backgroundColor: COLORS.navy,
+    borderColor: COLORS.navy,
   },
   kpiLabel: {
     fontSize: 10,
@@ -849,10 +855,22 @@ const styles = StyleSheet.create({
     color: COLORS.textMuted,
     textTransform: 'uppercase',
   },
+  kpiLabelHighlight: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: COLORS.primaryBright,
+    textTransform: 'uppercase',
+  },
   kpiValue: {
-    fontSize: 14,
+    fontSize: 13,
+    fontWeight: '700',
+    color: COLORS.textSecondary,
+    marginTop: 2,
+  },
+  kpiValueHighlight: {
+    fontSize: 15,
     fontWeight: '900',
-    color: COLORS.navy,
+    color: COLORS.goldLight,
     marginTop: 2,
   },
   filterRow: {
