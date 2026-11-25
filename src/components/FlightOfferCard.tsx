@@ -130,24 +130,26 @@ export const FlightOfferCard: React.FC<FlightOfferCardProps> = ({ offer, rank })
         </View>
       </View>
 
-      {/* Datas e pontuação */}
+      {/* Datas, pontuação e valor em moeda (R$) */}
       <View style={styles.priceRow}>
-        <View>
+        <View style={styles.pointsBlock}>
+          <Text style={styles.priceBlockLabel}>EM PONTOS</Text>
           <Text style={styles.pointsValue}>
             {formatNumberBR(offer.totalPoints)}{' '}
             <Text style={styles.pointsUnit}>{offer.currencyName}</Text>
           </Text>
           <Text style={styles.taxesText}>
-            + {formatCurrencyBRL(offer.taxesBRL)} em taxas •{' '}
+            + {formatCurrencyBRL(offer.taxesBRL)} taxas •{' '}
             {offer.tripType === 'round-trip' && offer.returnDate
               ? `${formatDateShortBR(offer.departureDate)} → ${formatDateShortBR(offer.returnDate)}`
               : `Ida ${formatDateShortBR(offer.departureDate)}`}
           </Text>
         </View>
 
-        <View style={styles.cpmBox}>
-          <Text style={styles.cpmLabel}>Ref. dinheiro</Text>
-          <Text style={styles.cpmValue}>{formatCurrencyBRL(offer.estimatedCashBRL)}</Text>
+        <View style={styles.cashBox}>
+          <Text style={styles.cashLabel}>VALOR EM MOEDA</Text>
+          <Text style={styles.cashValue}>{formatCurrencyBRL(offer.estimatedCashBRL)}</Text>
+          <Text style={styles.cpmSub}>≈ {formatCurrencyBRL(offer.cpmBRL)}/milheiro</Text>
         </View>
       </View>
 
@@ -357,13 +359,24 @@ const styles = StyleSheet.create({
   },
   priceRow: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'stretch',
     justifyContent: 'space-between',
     marginTop: 12,
-    gap: 8,
+    gap: 10,
+  },
+  pointsBlock: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  priceBlockLabel: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: COLORS.primary,
+    letterSpacing: 0.4,
+    marginBottom: 2,
   },
   pointsValue: {
-    fontSize: 22,
+    fontSize: 21,
     fontWeight: '900',
     color: COLORS.navy,
   },
@@ -377,19 +390,35 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     marginTop: 2,
   },
-  cpmBox: {
+  cashBox: {
     alignItems: 'flex-end',
+    justifyContent: 'center',
+    backgroundColor: COLORS.goldSoft,
+    borderWidth: 1,
+    borderColor: COLORS.goldBorder,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    minWidth: 126,
   },
-  cpmLabel: {
-    fontSize: 10,
-    color: COLORS.textMuted,
+  cashLabel: {
+    fontSize: 9,
+    color: COLORS.goldDark,
     textTransform: 'uppercase',
-    fontWeight: '700',
+    fontWeight: '800',
+    letterSpacing: 0.4,
   },
-  cpmValue: {
-    fontSize: 13,
+  cashValue: {
+    fontSize: 16,
+    fontWeight: '900',
+    color: COLORS.navy,
+    marginTop: 2,
+  },
+  cpmSub: {
+    fontSize: 10,
     fontWeight: '700',
-    color: COLORS.textSecondary,
+    color: COLORS.textMuted,
+    marginTop: 2,
   },
   transferBox: {
     flexDirection: 'row',

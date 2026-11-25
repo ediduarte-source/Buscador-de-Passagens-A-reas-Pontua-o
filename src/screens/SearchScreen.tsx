@@ -426,12 +426,12 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
                 <Text style={styles.kpiValue}>{formatNumberBR(summary.lowestPoints)} pts</Text>
               </View>
               <View style={styles.kpiBox}>
-                <Text style={styles.kpiLabel}>Programas</Text>
-                <Text style={styles.kpiValue}>{summary.totalProgramsCompared}</Text>
+                <Text style={styles.kpiLabel}>Menor valor (R$)</Text>
+                <Text style={styles.kpiValue}>{formatCurrencyBRL(summary.lowestCashBRL)}</Text>
               </View>
               <View style={styles.kpiBox}>
-                <Text style={styles.kpiLabel}>Menor taxa</Text>
-                <Text style={styles.kpiValue}>{formatCurrencyBRL(summary.lowestTaxesBRL)}</Text>
+                <Text style={styles.kpiLabel}>Programas</Text>
+                <Text style={styles.kpiValue}>{summary.totalProgramsCompared}</Text>
               </View>
             </View>
           </View>
@@ -472,6 +472,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
             <Text style={styles.sortLabel}>Ordenar por:</Text>
             {[
               { key: 'points' as const, label: 'Menor pontuação' },
+              { key: 'cash' as const, label: 'Menor valor (R$)' },
               { key: 'value' as const, label: 'Custo-benefício' },
               { key: 'duration' as const, label: 'Menor duração' },
               { key: 'taxes' as const, label: 'Menor taxa' },

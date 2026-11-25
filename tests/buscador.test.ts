@@ -220,6 +220,13 @@ describe('Motor de Busca e Comparação por Pontuação', () => {
     for (let i = 1; i < byTaxes.length; i += 1) {
       expect(byTaxes[i].taxesBRL).toBeGreaterThanOrEqual(byTaxes[i - 1].taxesBRL);
     }
+
+    const byCash = filterAndSortOffers(result.offers, { sortBy: 'cash' });
+    expect(result.lowestCashBRL).toBeGreaterThan(0);
+    expect(byCash[0].estimatedCashBRL).toBe(result.lowestCashBRL);
+    for (let i = 1; i < byCash.length; i += 1) {
+      expect(byCash[i].estimatedCashBRL).toBeGreaterThanOrEqual(byCash[i - 1].estimatedCashBRL);
+    }
   });
 
   it('calcula distância Haversine realista entre GRU e LIS', () => {

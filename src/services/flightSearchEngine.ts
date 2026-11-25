@@ -355,6 +355,7 @@ export function searchFlightsByPoints(params: SearchParams): SearchResultSummary
   }
 
   const lowestPoints = offers.length > 0 ? Math.min(...offers.map((o) => o.totalPoints)) : 0;
+  const lowestCashBRL = offers.length > 0 ? Math.min(...offers.map((o) => o.estimatedCashBRL)) : 0;
   const lowestTaxesBRL = offers.length > 0 ? Math.min(...offers.map((o) => o.taxesBRL)) : 0;
   const airlineOffersCount = offers.filter((o) => o.programType === 'airline').length;
   const bankOffersCount = offers.filter((o) => o.programType === 'bank').length;
@@ -365,6 +366,7 @@ export function searchFlightsByPoints(params: SearchParams): SearchResultSummary
     originLabel: `${params.origin.city} (${params.origin.code})`,
     destinationLabel: `${params.destination.city} (${params.destination.code})`,
     lowestPoints,
+    lowestCashBRL,
     lowestTaxesBRL,
     totalProgramsCompared: offers.length,
     airlineOffersCount,
@@ -396,6 +398,8 @@ export function filterAndSortOffers(
 
   return [...filtered].sort((a, b) => {
     switch (sortBy) {
+      case 'cash':
+        return a.estimatedCashBRL - b.estimatedCashBRL;
       case 'value':
         return a.valueScore - b.valueScore;
       case 'duration':

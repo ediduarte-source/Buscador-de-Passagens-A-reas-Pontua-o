@@ -119,6 +119,7 @@ export interface SearchResultSummary {
   originLabel: string;
   destinationLabel: string;
   lowestPoints: number;
+  lowestCashBRL: number;
   lowestTaxesBRL: number;
   totalProgramsCompared: number;
   airlineOffersCount: number;
@@ -127,4 +128,4 @@ export interface SearchResultSummary {
   searchedDestinationCodes: string[];
 }
 
-export type SortOption = 'points' | 'value' | 'duration' | 'taxes';
+export type SortOption = 'points' | 'cash' | 'value' | 'duration' | 'taxes';
