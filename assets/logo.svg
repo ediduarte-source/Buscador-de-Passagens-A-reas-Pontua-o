@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#152C5B"/>
+      <stop offset="55%" stop-color="#0B1936"/>
+      <stop offset="100%" stop-color="#071126"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0891B2"/>
+      <stop offset="100%" stop-color="#22D3EE"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded Square Badge -->
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#bgGrad)"/>
+  <rect x="24" y="24" width="464" height="464" rx="104" fill="none" stroke="#1E3A6E" stroke-width="4"/>
+
+  <!-- Sweeping Cyan Orbital Arc -->
+  <path d="M 94 352 A 196 196 0 0 1 384 128" fill="none" stroke="url(#cyanGrad)" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- Golden Points Trail Dots -->
+  <circle cx="118" cy="396" r="10" fill="#F59E0B" opacity="0.55"/>
+  <circle cx="152" cy="378" r="12" fill="#F59E0B" opacity="0.75"/>
+  <circle cx="188" cy="354" r="14" fill="url(#goldGrad)"/>
+
+  <!-- Stylized Ascending Airplane -->
+  <g transform="translate(262, 248) rotate(-38)">
+    <!-- Lower Cyan Wing Accent -->
+    <path d="M -26 6 L -78 96 L -40 96 L 26 16 Z" fill="url(#cyanGrad)"/>
+    <!-- Tail Fin -->
+    <path d="M -112 0 L -144 -38 L -120 -38 L -80 -6 Z" fill="#22D3EE"/>
+    <path d="M -112 0 L -144 38 L -120 38 L -80 6 Z" fill="#0891B2"/>
+    <!-- Upper Main Wing -->
+    <path d="M -26 -6 L -78 -96 L -40 -96 L 26 -16 Z" fill="#FFFFFF"/>
+    <!-- Fuselage -->
+    <path d="M -126 0 C -126 -14 -80 -18 28 -16 C 88 -14 134 -6 146 0 C 134 6 88 14 28 16 C -80 18 -126 14 -126 0 Z" fill="#FFFFFF"/>
+    <!-- Cockpit Highlight -->
+    <path d="M 76 -6 C 98 -5 116 -2 126 0 C 116 2 98 5 76 6 Z" fill="#06B6D4"/>
+  </g>
+
+  <!-- Golden 4-Point Loyalty Star Spark -->
+  <path d="M 382 94 C 386 122 394 130 422 134 C 394 138 386 146 382 174 C 378 146 370 138 342 134 C 370 130 378 122 382 94 Z" fill="url(#goldGrad)"/>
+  <!-- Secondary Mini Spark -->
+  <path d="M 426 176 C 428 188 432 192 444 194 C 432 196 428 200 426 212 C 424 200 420 196 408 194 C 420 192 424 188 426 176 Z" fill="#FDE047"/>
+</svg>

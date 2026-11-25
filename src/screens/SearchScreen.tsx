@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AirportAutocomplete } from '../components/AirportAutocomplete';
+import { BrandLogo } from '../components/BrandLogo';
 import { DatePickerModal } from '../components/DatePickerModal';
 import { FlightOfferCard } from '../components/FlightOfferCard';
 import { AIRPORT_OPTION_BY_CODE } from '../data/airports';
@@ -174,13 +175,7 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
     >
       {/* Hero Banner */}
       <View style={styles.hero}>
-        <View style={styles.heroTitleRow}>
-          <Ionicons name="airplane" size={22} color="#60A5FA" />
-          <Text style={styles.heroTitle}>Buscador de Passagens</Text>
-        </View>
-        <Text style={styles.heroSubtitle}>
-          Compare passagens por pontos em todas as companhias aéreas, Livelo, Esfera, C6 Átomos e bancos parceiros.
-        </Text>
+        <BrandLogo subtitle="Compare passagens por pontos em todas as companhias aéreas, Livelo, Esfera, C6 Átomos e bancos parceiros." />
 
         {/* Categorias: Todas / Nacionais / Internacionais */}
         <View style={styles.categoryTabs}>

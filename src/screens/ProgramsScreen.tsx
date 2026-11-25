@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { FlatList, Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { BrandLogo } from '../components/BrandLogo';
 import { AIRLINE_PROGRAMS, BANK_PROGRAMS, LOYALTY_PROGRAMS } from '../data/programs';
 import { COLORS } from '../theme/colors';
 import { ProgramType } from '../types/flight';
@@ -28,10 +29,10 @@ export const ProgramsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerBanner}>
-        <Text style={styles.title}>Programas & Companhias</Text>
-        <Text style={styles.subtitle}>
-          {AIRLINE_PROGRAMS.length} companhias aéreas e {BANK_PROGRAMS.length} programas de pontos (Livelo, Esfera, C6 Átomos e mais)
-        </Text>
+        <BrandLogo
+          compact
+          subtitle={`${AIRLINE_PROGRAMS.length} companhias aéreas e ${BANK_PROGRAMS.length} programas de pontos (Livelo, Esfera, C6 Átomos e mais)`}
+        />
       </View>
 
       <View style={styles.chipsRow}>

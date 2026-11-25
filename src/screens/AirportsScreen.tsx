@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { BrandLogo } from '../components/BrandLogo';
 import { AIRPORTS, ALL_AIRPORT_OPTIONS, normalizeText } from '../data/airports';
 import { COLORS } from '../theme/colors';
 import { AirportOption } from '../types/flight';
@@ -47,10 +48,10 @@ export const AirportsScreen: React.FC<AirportsScreenProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.headerBanner}>
-        <Text style={styles.title}>Todos os Aeroportos</Text>
-        <Text style={styles.subtitle}>
-          {stats.total} aeroportos individuais + {stats.groups} opções agrupadas para cidades com múltiplos aeroportos
-        </Text>
+        <BrandLogo
+          compact
+          subtitle={`${stats.total} aeroportos individuais + ${stats.groups} opções agrupadas para cidades com múltiplos aeroportos`}
+        />
       </View>
 
       <View style={styles.searchBox}>
@@ -233,8 +234,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
   },
   groupCard: {
-    backgroundColor: '#F4F8FF',
-    borderColor: '#BFDBFE',
+    backgroundColor: COLORS.primarySoft,
+    borderColor: COLORS.primaryBorder,
   },
   itemTop: {
     flexDirection: 'row',

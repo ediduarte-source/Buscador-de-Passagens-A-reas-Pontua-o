@@ -341,8 +341,8 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   groupOptionRow: {
-    backgroundColor: '#F4F8FF',
-    borderColor: '#BFDBFE',
+    backgroundColor: COLORS.primarySoft,
+    borderColor: COLORS.primaryBorder,
   },
   optionRowPressed: {
     opacity: 0.85,

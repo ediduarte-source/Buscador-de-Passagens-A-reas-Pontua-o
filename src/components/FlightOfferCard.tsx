@@ -200,8 +200,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
   },
   topCard: {
-    borderColor: COLORS.accent,
-    borderWidth: 1.5,
+    borderColor: COLORS.gold,
+    borderWidth: 1.8,
   },
   headerRow: {
     flexDirection: 'row',
@@ -437,7 +437,7 @@ const styles = StyleSheet.create({
     gap: 5,
     backgroundColor: COLORS.primarySoft,
     borderWidth: 1,
-    borderColor: '#BFDBFE',
+    borderColor: COLORS.primaryBorder,
     paddingVertical: 11,
     paddingHorizontal: 12,
     borderRadius: 10,
