@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Buscador de Passagens",
+    "slug": "buscador-de-passagens",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "buscadordepassagens",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.buscadordepassagens.app"
+    },
+    "android": {
+      "package": "com.buscadordepassagens.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0B1F3A",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    }
+  }
+}
