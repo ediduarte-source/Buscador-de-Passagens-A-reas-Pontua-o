@@ -223,9 +223,10 @@ describe('Motor de Busca e Comparação por Pontuação', () => {
 
     const byCash = filterAndSortOffers(result.offers, { sortBy: 'cash' });
     expect(result.lowestCashBRL).toBeGreaterThan(0);
-    expect(byCash[0].estimatedCashBRL).toBe(result.lowestCashBRL);
+    expect(byCash[0].cashPriceBRL).toBe(result.lowestCashBRL);
+    expect(byCash[0].cashPurchaseUrl.startsWith('https://')).toBe(true);
     for (let i = 1; i < byCash.length; i += 1) {
-      expect(byCash[i].estimatedCashBRL).toBeGreaterThanOrEqual(byCash[i - 1].estimatedCashBRL);
+      expect(byCash[i].cashPriceBRL).toBeGreaterThanOrEqual(byCash[i - 1].cashPriceBRL);
     }
   });
 

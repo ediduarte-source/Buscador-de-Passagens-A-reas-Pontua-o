@@ -101,7 +101,8 @@ export interface FlightOffer {
   totalPoints: number;
   currencyName: string;
   taxesBRL: number;
-  estimatedCashBRL: number;
+  cashPriceBRL: number;
+  cashPurchaseUrl: string;
   cpmBRL: number;
   cabin: CabinClass;
   tripType: TripType;

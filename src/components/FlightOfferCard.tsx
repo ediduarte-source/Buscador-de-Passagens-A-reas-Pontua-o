@@ -130,7 +130,7 @@ export const FlightOfferCard: React.FC<FlightOfferCardProps> = ({ offer, rank })
         </View>
       </View>
 
-      {/* Datas, pontuação e valor em moeda (R$) */}
+      {/* Datas, pontuação e Preço (compra direta sem milhas) */}
       <View style={styles.priceRow}>
         <View style={styles.pointsBlock}>
           <Text style={styles.priceBlockLabel}>EM PONTOS</Text>
@@ -146,11 +146,16 @@ export const FlightOfferCard: React.FC<FlightOfferCardProps> = ({ offer, rank })
           </Text>
         </View>
 
-        <View style={styles.cashBox}>
-          <Text style={styles.cashLabel}>VALOR EM MOEDA</Text>
-          <Text style={styles.cashValue}>{formatCurrencyBRL(offer.estimatedCashBRL)}</Text>
-          <Text style={styles.cpmSub}>≈ {formatCurrencyBRL(offer.cpmBRL)}/milheiro</Text>
-        </View>
+        <Pressable
+          onPress={() => openExternalUrl(offer.cashPurchaseUrl)}
+          style={({ pressed }) => [styles.cashBox, pressed && styles.btnPressed]}
+          accessibilityRole="link"
+          accessibilityLabel={`Ver Preço direto na ${offer.airlineName}`}
+        >
+          <Text style={styles.cashLabel}>PREÇO</Text>
+          <Text style={styles.cashValue}>{formatCurrencyBRL(offer.cashPriceBRL)}</Text>
+          <Text style={styles.cpmSub}>Direto na cia (sem milhas) ↗</Text>
+        </Pressable>
       </View>
 
       {offer.transferNote && (

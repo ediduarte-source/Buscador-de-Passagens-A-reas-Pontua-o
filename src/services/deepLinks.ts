@@ -431,3 +431,167 @@ export function buildSimulationUrl(programId: string, params: DeepLinkParams): s
     }
   }
 }
+
+/**
+ * Gera URL de compra direta em dinheiro (sem milhas) no site da companhia aérea operadora.
+ */
+export function buildCashPurchaseUrl(airlineCode: string, params: DeepLinkParams): string {
+  const { originCode, destinationCode, departureDate, returnDate, tripType, adults, children, infants, cabin } = params;
+  const isRoundTrip = tripType === 'round-trip' && Boolean(returnDate);
+  const effectiveReturn = isRoundTrip && returnDate ? returnDate : undefined;
+
+  switch (airlineCode) {
+    case 'G3': {
+      const q = new URLSearchParams({
+        from: originCode,
+        to: destinationCode,
+        departureDate,
+        adults: String(adults),
+        children: String(children),
+        infants: String(infants),
+        tripType: isRoundTrip ? 'RT' : 'OW',
+      });
+      if (effectiveReturn) q.set('returnDate', effectiveReturn);
+      return `https://b2c.voegol.com.br/compra?${q.toString()}`;
+    }
+    case 'LA': {
+      const q = new URLSearchParams({
+        origin: originCode,
+        destination: destinationCode,
+        outbound: `${departureDate}T12:00:00.000Z`,
+        adt: String(adults),
+        chd: String(children),
+        inf: String(infants),
+        trip: isRoundTrip ? 'RT' : 'OW',
+        cabin: mapCabin(cabin, 'latam'),
+      });
+      if (effectiveReturn) q.set('inbound', `${effectiveReturn}T12:00:00.000Z`);
+      return `https://www.latamairlines.com/br/pt/oferta-voos?${q.toString()}`;
+    }
+    case 'AD': {
+      const q = new URLSearchParams({
+        'c[0].ds': originCode,
+        'c[0].std': toMMDDYYYY(departureDate),
+        'c[0].as': destinationCode,
+        'p[0].t': 'ADT',
+        'p[0].c': String(adults),
+        cc: 'BRL',
+      });
+      if (effectiveReturn) {
+        q.set('c[1].ds', destinationCode);
+        q.set('c[1].std', toMMDDYYYY(effectiveReturn));
+        q.set('c[1].as', originCode);
+      }
+      return `https://www.voeazul.com.br/br/pt/home/selecao-voo?${q.toString()}`;
+    }
+    case 'TP': {
+      const q = new URLSearchParams({
+        market: 'BR',
+        language: 'pt',
+        origin: originCode,
+        destination: destinationCode,
+        depDate: toDDMMYYYYDots(departureDate),
+        adt: String(adults),
+      });
+      if (effectiveReturn) q.set('retDate', toDDMMYYYYDots(effectiveReturn));
+      return `https://booking.flytap.com/booking/flights/deeplink?${q.toString()}`;
+    }
+    case 'IB': {
+      const q = new URLSearchParams({
+        origin: originCode,
+        destination: destinationCode,
+        departureDate,
+        adults: String(adults),
+      });
+      if (effectiveReturn) q.set('returnDate', effectiveReturn);
+      return `https://www.iberia.com/br/buscador-vuelos/?${q.toString()}`;
+    }
+    case 'AA': {
+      const slices = [
+        { orig: originCode, dest: destinationCode, date: departureDate },
+        ...(effectiveReturn ? [{ orig: destinationCode, dest: originCode, date: effectiveReturn }] : []),
+      ];
+      const q = new URLSearchParams({
+        locale: 'pt_BR',
+        pax: String(adults + children),
+        type: isRoundTrip ? 'RoundTrip' : 'OneWay',
+        slices: JSON.stringify(slices),
+      });
+      return `https://www.aa.com/booking/search?${q.toString()}`;
+    }
+    case 'AF': {
+      const connections = effectiveReturn
+        ? `${originCode}:A:${toYYYYMMDDCompact(departureDate)}>${destinationCode}:A-${destinationCode}:A:${toYYYYMMDDCompact(effectiveReturn)}>${originCode}:A`
+        : `${originCode}:A:${toYYYYMMDDCompact(departureDate)}>${destinationCode}:A`;
+      const q = new URLSearchParams({
+        pax: `${adults}:${children}:${infants}`,
+        cabinClass: mapCabin(cabin, 'upper'),
+        connections,
+      });
+      return `https://wwws.airfrance.com.br/search/offers?${q.toString()}`;
+    }
+    case 'UA': {
+      const q = new URLSearchParams({
+        f: originCode,
+        t: destinationCode,
+        d: departureDate,
+        tt: isRoundTrip ? '1' : '0',
+        px: String(adults + children),
+      });
+      if (effectiveReturn) q.set('r', effectiveReturn);
+      return `https://www.united.com/pt/br/fsr/choose-flights?${q.toString()}`;
+    }
+    case 'DL': {
+      const q = new URLSearchParams({
+        action: 'findFlights',
+        tripType: isRoundTrip ? 'ROUND_TRIP' : 'ONE_WAY',
+        originCity: originCode,
+        destinationCity: destinationCode,
+        departureDate: toMMDDYYYY(departureDate),
+        paxCount: String(adults + children),
+      });
+      if (effectiveReturn) q.set('returnDate', toMMDDYYYY(effectiveReturn));
+      return `https://www.delta.com/flight-search/search?${q.toString()}`;
+    }
+    case 'CM': {
+      const q = new URLSearchParams({
+        roundtrip: isRoundTrip ? 'true' : 'false',
+        adults: String(adults),
+        date1: departureDate,
+        airport1: originCode,
+        airport2: destinationCode,
+      });
+      if (effectiveReturn) q.set('date2', effectiveReturn);
+      return `https://shopping.copaair.com/?${q.toString()}`;
+    }
+    case 'LH': {
+      const q = new URLSearchParams({
+        origin: originCode,
+        destination: destinationCode,
+        outboundDate: departureDate,
+        adults: String(adults),
+      });
+      if (effectiveReturn) q.set('returnDate', effectiveReturn);
+      return `https://www.lufthansa.com/br/pt/homepage?${q.toString()}`;
+    }
+    case 'AC': {
+      const q = new URLSearchParams({
+        org0: originCode,
+        dest0: destinationCode,
+        departureDate0: departureDate,
+        ADT: String(adults),
+        tripType: isRoundTrip ? 'R' : 'O',
+      });
+      if (effectiveReturn) {
+        q.set('org1', destinationCode);
+        q.set('dest1', originCode);
+        q.set('departureDate1', effectiveReturn);
+      }
+      return `https://www.aircanada.com/booking/ca/en/aco/search?${q.toString()}`;
+    }
+    default: {
+      const fallbackDate = parseIsoDate(departureDate).toISOString().slice(0, 10);
+      return `https://www.google.com/travel/flights?q=Flights%20from%20${originCode}%20to%20${destinationCode}%20on%20${fallbackDate}`;
+    }
+  }
+}

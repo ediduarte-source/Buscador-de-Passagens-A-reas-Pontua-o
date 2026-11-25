@@ -15,7 +15,7 @@ import {
   SortOption,
 } from '../types/flight';
 import { diffDaysIso, getTodayIso, pad2 } from '../utils/dateUtils';
-import { buildSimulationUrl } from './deepLinks';
+import { buildCashPurchaseUrl, buildSimulationUrl } from './deepLinks';
 
 const EARTH_RADIUS_KM = 6371;
 
@@ -247,12 +247,6 @@ export function searchFlightsByPoints(params: SearchParams): SearchResultSummary
     const baseTaxes = category === 'nacional' ? 46 + seed * 38 : 265 + seed * 340;
     const taxesBRL = Number((baseTaxes * (isRoundTrip ? 1.9 : 1) * Math.max(1, params.adults + params.children)).toFixed(2));
 
-    // Preço médio de mercado em dinheiro para estimar CPM (custo por milheiro)
-    const estimatedCashBRL = Number(
-      ((pointsPerPassenger / 1000) * (category === 'nacional' ? 24.5 : 31.5) * payingPassengers + taxesBRL).toFixed(2),
-    );
-    const cpmBRL = Number((((estimatedCashBRL - taxesBRL) / Math.max(1, totalPoints)) * 1000).toFixed(2));
-
     // Companhia operadora e eventual parceiro de transferência para programas de banco
     let airlineName = PROGRAM_AIRLINE_MAP[program.id]?.name ?? 'Companhia Parceira';
     let airlineCode = PROGRAM_AIRLINE_MAP[program.id]?.code ?? 'BR';
@@ -292,6 +286,40 @@ export function searchFlightsByPoints(params: SearchParams): SearchResultSummary
       }
     }
 
+    // Preço real de compra direta no site da companhia aérea em dinheiro (desconsiderando milhas/pontos)
+    const cashBaseOneWay =
+      category === 'nacional'
+        ? distanceKm < 500
+          ? 289
+          : distanceKm < 1200
+            ? 439
+            : distanceKm < 2200
+              ? 649
+              : 879
+        : distanceKm < 2800
+          ? 1190
+          : distanceKm < 6500
+            ? 2350
+            : distanceKm < 9800
+              ? 3490
+              : 4890;
+
+    const airlineCashSeed = hashSeed(
+      `cash|${airlineCode}|${origin.code}|${destination.code}|${params.departureDate}|${params.returnDate ?? ''}|${params.cabin}|${params.tripType}`,
+    );
+    const cashCabinMult =
+      params.cabin === 'first' ? 5.2 : params.cabin === 'business' ? 3.4 : params.cabin === 'premium_economy' ? 1.65 : 1.0;
+    const cashFareBRL =
+      cashBaseOneWay *
+      (0.86 + airlineCashSeed * 0.36) *
+      advanceFactor *
+      cashCabinMult *
+      (isRoundTrip ? 1.88 : 1.0) *
+      payingPassengers;
+    const cashPriceBRL = Number((cashFareBRL + taxesBRL).toFixed(2));
+    const cpmBRL = Number((((cashPriceBRL - taxesBRL) / Math.max(1, totalPoints)) * 1000).toFixed(2));
+    const cashPurchaseUrl = buildCashPurchaseUrl(airlineCode, deepLinkParams);
+
     const simulationUrl = buildSimulationUrl(program.id, deepLinkParams);
 
     const badges: string[] = [];
@@ -329,7 +357,8 @@ export function searchFlightsByPoints(params: SearchParams): SearchResultSummary
       totalPoints,
       currencyName: program.currencyName,
       taxesBRL,
-      estimatedCashBRL,
+      cashPriceBRL,
+      cashPurchaseUrl,
       cpmBRL,
       cabin: params.cabin,
       tripType: params.tripType,
@@ -355,7 +384,7 @@ export function searchFlightsByPoints(params: SearchParams): SearchResultSummary
   }
 
   const lowestPoints = offers.length > 0 ? Math.min(...offers.map((o) => o.totalPoints)) : 0;
-  const lowestCashBRL = offers.length > 0 ? Math.min(...offers.map((o) => o.estimatedCashBRL)) : 0;
+  const lowestCashBRL = offers.length > 0 ? Math.min(...offers.map((o) => o.cashPriceBRL)) : 0;
   const lowestTaxesBRL = offers.length > 0 ? Math.min(...offers.map((o) => o.taxesBRL)) : 0;
   const airlineOffersCount = offers.filter((o) => o.programType === 'airline').length;
   const bankOffersCount = offers.filter((o) => o.programType === 'bank').length;
@@ -399,7 +428,7 @@ export function filterAndSortOffers(
   return [...filtered].sort((a, b) => {
     switch (sortBy) {
       case 'cash':
-        return a.estimatedCashBRL - b.estimatedCashBRL;
+        return a.cashPriceBRL - b.cashPriceBRL;
       case 'value':
         return a.valueScore - b.valueScore;
       case 'duration':
